@@ -1,0 +1,8 @@
+{
+  "inputDir": "data/images/raw",
+  "outputDir": "data/images/webp",
+  "maxWidth": 800,
+  "maxHeight": 600,
+  "quality": 80,
+  "extensions": [".jpg", ".jpeg", ".png", ".gif", ".tiff", ".bmp", ".webp"]
+}

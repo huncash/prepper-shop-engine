@@ -1,0 +1,132 @@
+services:
+  admin-api:
+    build:
+      context: .
+      dockerfile: admin/Dockerfile
+    ports:
+      - "127.0.0.1:4002:4002"
+    volumes:
+      - ./admin:/app
+      - /root/private_data:/root/private_data:ro
+      - admin-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - ADMIN_HOST=127.0.0.1
+      - ADMIN_PORT=4002
+      - PRIVATE_DATA_PATH=/root/private_data/source_data.json
+    depends_on:
+      - auth-service
+
+  api:
+    build:
+      context: .
+      dockerfile: shared-core/Dockerfile
+    ports:
+      - "4000:4000"
+    volumes:
+      - ./shared-core:/app
+      - api-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - PRODUCTS_DB_PATH=/app/data/products.sqlite
+      - API_HOST=0.0.0.0
+      - API_PORT=4000
+
+  auth-service:
+    build:
+      context: .
+      dockerfile: shared-core/Dockerfile.auth
+    ports:
+      - "4001:4001"
+    volumes:
+      - ./shared-core:/app
+      - auth-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - AUTH_HOST=0.0.0.0
+      - AUTH_PORT=4001
+
+  site-1:
+    build:
+      context: .
+      dockerfile: site-1/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./site-1:/app
+      - ./shared-core:/shared-core
+      - site-1-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SHARED_CORE_PATH=/shared-core
+      - API_URL=http://api:4000
+      - AUTH_URL=http://auth-service:4001
+    depends_on:
+      - api
+      - auth-service
+
+  site-2:
+    build:
+      context: .
+      dockerfile: site-2/Dockerfile
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./site-2:/app
+      - ./shared-core:/shared-core
+      - site-2-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SHARED_CORE_PATH=/shared-core
+      - API_URL=http://api:4000
+      - AUTH_URL=http://auth-service:4001
+    depends_on:
+      - api
+      - auth-service
+
+  site-3:
+    build:
+      context: .
+      dockerfile: site-3/Dockerfile
+    ports:
+      - "3002:3002"
+    volumes:
+      - ./site-3:/app
+      - ./shared-core:/shared-core
+      - site-3-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SHARED_CORE_PATH=/shared-core
+      - API_URL=http://api:4000
+      - AUTH_URL=http://auth-service:4001
+    depends_on:
+      - api
+      - auth-service
+
+  site-4:
+    build:
+      context: .
+      dockerfile: site-4/Dockerfile
+    ports:
+      - "3003:3003"
+    volumes:
+      - ./site-4:/app
+      - ./shared-core:/shared-core
+      - site-4-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SHARED_CORE_PATH=/shared-core
+      - API_URL=http://api:4000
+      - AUTH_URL=http://auth-service:4001
+    depends_on:
+      - api
+      - auth-service
+
+volumes:
+  admin-node-modules:
+  api-node-modules:
+  auth-node-modules:
+  site-1-node-modules:
+  site-2-node-modules:
+  site-3-node-modules:
+  site-4-node-modules:

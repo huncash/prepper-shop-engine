@@ -1,0 +1,21 @@
+node_modules/
+dist/
+.next/
+out/
+
+# adatbázis
+*.sqlite
+
+# adatfájlok
+shared-core/data/mock-db.json
+shared-core/data/images/raw/
+shared-core/data/images/webp/
+
+# env
+.env
+.env.local
+.env*.local
+
+# build cache
+.turbo/
+*.tsbuildinfo

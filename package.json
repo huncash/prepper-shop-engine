@@ -1,0 +1,19 @@
+{
+  "name": "prepper-shop-engine",
+  "private": true,
+  "scripts": {
+    "build-all": "npm run build -w @prepper-shop/site-1 -w @prepper-shop/site-2 -w @prepper-shop/site-3 -w @prepper-shop/site-4",
+    "watch:images": "npm run watch:images --workspace @prepper-shop/shared-core",
+    "process-images": "npm run process-images --workspace @prepper-shop/shared-core",
+    "dev:api": "npm run dev:api --workspace @prepper-shop/shared-core",
+    "start:api": "npm run start:api --workspace @prepper-shop/shared-core"
+  },
+  "workspaces": [
+    "shared-core",
+    "admin",
+    "site-1",
+    "site-2",
+    "site-3",
+    "site-4"
+  ]
+}

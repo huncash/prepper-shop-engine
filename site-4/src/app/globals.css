@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* rendezvenyarnyekolas.hu — meleg, szerkesztői paletta */
+    --background: 46 30% 97%;       /* #f9f7f4 — meleg fehér */
+    --foreground: 30 15% 12%;       /* #1e1a16 — meleg fekete */
+
+    --card: 46 30% 97%;
+    --card-foreground: 30 15% 12%;
+
+    --muted: 40 20% 92%;            /* #edeae4 — meleg világosszürke */
+    --muted-foreground: 30 10% 45%; /* #766f65 */
+
+    --primary: 140 28% 30%;         /* #3a5c3a — erdei zöld */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 25% 88%;        /* #e5dfd6 */
+    --secondary-foreground: 30 15% 20%;
+
+    --accent: 270 40% 50%;          /* #7a4db3 — UV lila */
+    --accent-foreground: 0 0% 100%;
+
+    --border: 40 15% 85%;
+    --input: 40 15% 85%;
+    --ring: 140 28% 30%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --radius: 0.375rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}

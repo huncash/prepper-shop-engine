@@ -1,0 +1,8 @@
+{
+  "host": "0.0.0.0",
+  "port": 4000,
+  "authPort": 4001,
+  "adminHost": "127.0.0.1",
+  "adminPort": 4002,
+  "privateDataPath": "/root/private_data/source_data.json"
+}

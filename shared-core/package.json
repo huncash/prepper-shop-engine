@@ -1,0 +1,54 @@
+{
+  "name": "@prepper-shop/shared-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "process-images": "tsx scripts/image-processor.ts",
+    "watch:images": "tsx lib/image-processor.ts",
+    "start:api": "tsx src/server.ts",
+    "start:auth": "tsx src/auth-server.ts",
+    "dev:api": "tsx watch src/server.ts",
+    "dev:auth": "tsx watch src/auth-server.ts"
+  },
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./data-provider": "./lib/data-provider.ts",
+    "./api-client": "./src/api-client.ts",
+    "./auth/auth-provider": "./auth/auth-provider.ts",
+    "./cart-store": "./lib/cart-store.ts",
+    "./styles": "./src/styles/globals.css"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lunr": "^2.3.9",
+    "gray-matter": "^4.0.3",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "@radix-ui/react-slot": "^1.2.3",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "sharp": "^0.34.2",
+    "tailwind-merge": "^3.3.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/lunr": "^2.3.7",
+  
+    "@types/node": "^24.0.13",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}
