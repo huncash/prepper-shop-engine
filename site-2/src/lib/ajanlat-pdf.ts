@@ -1,7 +1,20 @@
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
 
-const logoIcon = "/assets/logo-icon.png";
+const LOGO_PATH = "/assets/logo-icon.png";
+
+/** about:blank iframe-ben a relatív /assets/... URL nem oldódik fel — abszolút kell. */
+function absoluteUrl(pathOrData: string): string {
+  if (!pathOrData || pathOrData.startsWith("data:") || /^https?:\/\//i.test(pathOrData)) {
+    return pathOrData;
+  }
+  if (typeof window === "undefined") return pathOrData;
+  try {
+    return new URL(pathOrData, window.location.origin).href;
+  } catch {
+    return pathOrData;
+  }
+}
 
 /* -------------------------------------------------------------------------- */
 /*  PDF-export — ugyanazokból a forrás-szövegekből, amiket az e-mail is használ */
@@ -146,6 +159,10 @@ function renderHtml(input: PdfInput): string {
   const fullName = [c.lastName, c.firstName].filter(Boolean).join(" ");
   const customerName = c.company || fullName || "—";
   const contactPerson = c.company && fullName ? fullName : "—";
+  const logoSrc = absoluteUrl(LOGO_PATH);
+  const signatureSrc = input.signatureDataUrl
+    ? absoluteUrl(input.signatureDataUrl)
+    : null;
 
   const customerRow = (label: string, value: string) =>
     `<tr>
@@ -160,7 +177,7 @@ function renderHtml(input: PdfInput): string {
     <table cellpadding="0" cellspacing="0" style="width:100%;border-bottom:2px solid #0f172a;padding-bottom:10px;margin-bottom:10px;">
       <tr>
         <td style="vertical-align:middle;width:78px;">
-          <img src="${logoIcon}" alt="" width="68" height="68" style="display:block;border-radius:8px;" />
+          <img src="${logoSrc}" alt="" width="68" height="68" style="display:block;border-radius:8px;" />
         </td>
         <td style="vertical-align:middle;padding-left:12px;">
           <div style="font-size:20px;font-weight:700;letter-spacing:-0.01em;line-height:1.15;">Projektorlámpacsere.hu</div>
@@ -246,8 +263,8 @@ function renderHtml(input: PdfInput): string {
         <td style="width:55%;"></td>
         <td style="width:45%;text-align:center;">
           ${
-            input.signatureDataUrl
-              ? `<img src="${input.signatureDataUrl}" alt="" style="max-height:52px;max-width:170px;display:inline-block;margin-bottom:2px;" />`
+            signatureSrc
+              ? `<img src="${signatureSrc}" alt="" style="max-height:52px;max-width:170px;display:inline-block;margin-bottom:2px;" />`
               : `<div style="height:40px;"></div>`
           }
           <div style="border-top:1px solid #0f172a;padding-top:3px;">

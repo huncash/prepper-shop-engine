@@ -115,7 +115,7 @@ export function SiteFooter() {
       <div className="border-t border-border">
         <div className="w-full px-6 py-4 text-xs text-muted-foreground text-center">
           <span>
-            © Copyright {company.foundedYear} – {new Date().getFullYear()}
+            © Copyright {company.foundedYear} – {new Date().getUTCFullYear()}
             {"  |  "}Minden jog fenntartva.{"  |  "}
             <Link href="/kapcsolat" className="hover:text-foreground">
               Kérdésed van? Írj nekünk!
