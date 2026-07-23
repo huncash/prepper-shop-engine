@@ -32,6 +32,14 @@ export function Footer({
   aboutLinks = [],
 }: FooterProps) {
   const year = new Date().getFullYear();
+  const partnerLink: FooterLink = {
+    label: "Partner oldal / Belépés",
+    href: "/partner/login",
+  };
+  const resolvedAboutLinks = [
+    ...aboutLinks.filter((l) => l.href !== partnerLink.href),
+    partnerLink,
+  ];
 
   return (
     <footer className={cn("border-t bg-muted/40 text-sm", className)}>
@@ -75,21 +83,19 @@ export function Footer({
             </div>
           ) : null}
 
-          {/* About links */}
-          {aboutLinks.length > 0 ? (
-            <div className="flex flex-col gap-3">
-              <p className="font-semibold text-foreground">Rólunk</p>
-              <ul className="flex flex-col gap-2">
-                {aboutLinks.map((item) => (
-                  <li key={item.href}>
-                    <a href={item.href} className="text-muted-foreground hover:text-foreground">
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
+          {/* About links — partner belépés mindig az utolsó sor */}
+          <div className="flex flex-col gap-3">
+            <p className="font-semibold text-foreground">Rólunk</p>
+            <ul className="flex flex-col gap-2">
+              {resolvedAboutLinks.map((item) => (
+                <li key={item.href}>
+                  <a href={item.href} className="text-muted-foreground hover:text-foreground">
+                    {item.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
 

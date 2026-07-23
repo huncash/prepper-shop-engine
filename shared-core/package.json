@@ -23,6 +23,8 @@
     "./auth/session-token": "./auth/session-token.ts",
     "./auth/session-constants": "./auth/session-constants.ts",
     "./auth/credentials": "./auth/credentials.ts",
+    "./auth/partner-store": "./auth/partner-store.ts",
+    "./auth/partner-handlers": "./auth/partner-handlers.ts",
     "./cart-store": "./lib/cart-store.ts",
     "./contact-handler": "./src/contact-handler.ts",
     "./styles": "./src/styles/globals.css",

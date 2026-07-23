@@ -104,6 +104,11 @@ export function SiteFooter() {
                   Kapcsolat
                 </Link>
               </li>
+              <li>
+                <Link href="/partner/login" className="hover:text-foreground">
+                  Partner oldal / Belépés
+                </Link>
+              </li>
             </ul>
           </div>
         </div>

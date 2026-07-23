@@ -16,6 +16,7 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": "..",
     "paths": {
+      "@/*": ["./site-1/src/*"],
       "@shared/components/*": ["./shared-core/src/components/*"],
       "@shared/lib/*": ["./shared-core/lib/*"],
       "@shared/auth/*": ["./shared-core/auth/*"],

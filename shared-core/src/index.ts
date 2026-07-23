@@ -16,6 +16,11 @@ export { CtaSection, type CtaSectionProps } from "./components/landing/CtaSectio
 export { FeatureGrid, type Feature, type FeatureGridProps } from "./components/landing/FeatureGrid";
 export { HeroSection, type HeroSectionProps } from "./components/landing/HeroSection";
 export { LoginForm, type LoginFormProps } from "./components/LoginForm";
+export {
+  PartnerAuthForm,
+  type PartnerAuthFormProps,
+  type PartnerAuthMode,
+} from "./components/PartnerAuthForm";
 export { ProductCard, type ProductCardProps } from "./components/ProductCard";
 export { ProductDetail, type ProductDetailProps } from "./components/ProductDetail";
 export { ContactForm, type ContactFormProps } from "./components/ContactForm";
@@ -24,6 +29,8 @@ export {
   removeItem,
   getCartItems,
   clearCart,
+  replaceCart,
+  mergeCart,
   useCartStore,
   type CartItem,
 } from "@shared/lib/cart-store";
