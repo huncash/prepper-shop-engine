@@ -26,6 +26,8 @@
     "./auth/partner-store": "./auth/partner-store.ts",
     "./auth/partner-handlers": "./auth/partner-handlers.ts",
     "./cart-store": "./lib/cart-store.ts",
+    "./file-crypto": "./lib/file-crypto.ts",
+    "./signature-store": "./lib/signature-store.ts",
     "./contact-handler": "./src/contact-handler.ts",
     "./styles": "./src/styles/globals.css",
     "./lib/utils": "./src/lib/utils.ts"

@@ -254,55 +254,127 @@ function AjanlatPage() {
   const [warrantyText, setWarrantyText] = useState("");
   const [comparisonNote, setComparisonNote] = useState("");
 
-  // Aláírás-kép (localStorage-ben tárolva, hogy ne kelljen minden ajánlatnál újra feltölteni)
-  const SIGNATURE_KEY = "ajanlat.signature.dataurl";
+  // Aláírás: titkosítva private_data/signatures/{uuid} — csak id a kliensen.
+  const SIGNATURE_ID_KEY = "ajanlat.signature.id";
+  const [signatureId, setSignatureId] = useState<string | null>(null);
   const [signatureDataUrl, setSignatureDataUrl] = useState<string | null>(null);
-  useEffect(() => {
+  const [signatureBusy, setSignatureBusy] = useState(false);
+  const [signatureErr, setSignatureErr] = useState<string | null>(null);
+
+  async function loadDefaultSignatureAsset() {
     try {
-      const v = localStorage.getItem(SIGNATURE_KEY);
-      if (v) {
-        setSignatureDataUrl(v);
-        return;
-      }
+      const mod = await import("@/assets/signature-kiss-patrik.png");
+      const url = (mod.default as { src: string }).src;
+      const res = await fetch(url);
+      const blob = await res.blob();
+      const reader = new FileReader();
+      reader.onload = () => setSignatureDataUrl(String(reader.result || ""));
+      reader.readAsDataURL(blob);
     } catch {
       /* noop */
     }
-    // Alapértelmezett, beépített aláírás (Kiss Patrik Péter) — dataURL-re konvertálva,
-    // hogy az iframe-be is működjön cross-origin korlátok nélkül.
+  }
+
+  async function fetchSignatureDataUrl(id: string): Promise<string | null> {
+    const res = await fetch(`/api/admin/signature/${encodeURIComponent(id)}`, {
+      credentials: "include",
+    });
+    if (!res.ok) return null;
+    const data = (await res.json()) as { dataUrl?: string };
+    return typeof data.dataUrl === "string" ? data.dataUrl : null;
+  }
+
+  useEffect(() => {
     (async () => {
       try {
-        const mod = await import("@/assets/signature-kiss-patrik.png");
-        const url = (mod.default as { src: string }).src;
-        const res = await fetch(url);
-        const blob = await res.blob();
-        const reader = new FileReader();
-        reader.onload = () => setSignatureDataUrl(String(reader.result || ""));
-        reader.readAsDataURL(blob);
+        const res = await fetch("/api/admin/signature", { credentials: "include" });
+        if (res.ok) {
+          const data = (await res.json()) as { id?: string | null; dataUrl?: string | null };
+          if (data.id && data.dataUrl) {
+            setSignatureId(data.id);
+            setSignatureDataUrl(data.dataUrl);
+            try {
+              localStorage.setItem(SIGNATURE_ID_KEY, data.id);
+            } catch {
+              /* noop */
+            }
+            return;
+          }
+        }
+      } catch {
+        /* fall through */
+      }
+      try {
+        const cachedId = localStorage.getItem(SIGNATURE_ID_KEY);
+        if (cachedId) {
+          const dataUrl = await fetchSignatureDataUrl(cachedId);
+          if (dataUrl) {
+            setSignatureId(cachedId);
+            setSignatureDataUrl(dataUrl);
+            return;
+          }
+        }
       } catch {
         /* noop */
       }
+      await loadDefaultSignatureAsset();
     })();
   }, []);
-  function onSignatureFile(file: File | null) {
+
+  async function onSignatureFile(file: File | null) {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const url = String(reader.result || "");
-      setSignatureDataUrl(url);
-      try {
-        localStorage.setItem(SIGNATURE_KEY, url);
-      } catch {
-        /* storage full — silent */
-      }
-    };
-    reader.readAsDataURL(file);
-  }
-  function clearSignature() {
-    setSignatureDataUrl(null);
+    setSignatureBusy(true);
+    setSignatureErr(null);
     try {
-      localStorage.removeItem(SIGNATURE_KEY);
+      const body = new FormData();
+      body.append("file", file);
+      const res = await fetch("/api/admin/signature", {
+        method: "POST",
+        credentials: "include",
+        body,
+      });
+      const data = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        id?: string;
+        dataUrl?: string;
+      };
+      if (!res.ok || !data.id || !data.dataUrl) {
+        throw new Error(data.error || "Feltöltés sikertelen.");
+      }
+      setSignatureId(data.id);
+      setSignatureDataUrl(data.dataUrl);
+      try {
+        localStorage.setItem(SIGNATURE_ID_KEY, data.id);
+      } catch {
+        /* noop */
+      }
+    } catch (e) {
+      setSignatureErr(e instanceof Error ? e.message : "Feltöltés sikertelen.");
+    } finally {
+      setSignatureBusy(false);
+    }
+  }
+
+  async function clearSignature() {
+    setSignatureBusy(true);
+    setSignatureErr(null);
+    try {
+      await fetch("/api/admin/signature", {
+        method: "DELETE",
+        credentials: "include",
+      });
     } catch {
       /* noop */
+    } finally {
+      setSignatureId(null);
+      setSignatureDataUrl(null);
+      try {
+        localStorage.removeItem(SIGNATURE_ID_KEY);
+      } catch {
+        /* noop */
+      }
+      setSignatureBusy(false);
+      await loadDefaultSignatureAsset();
     }
   }
 
@@ -350,7 +422,7 @@ function AjanlatPage() {
       warrantyText,
       comparisonNote,
       quoteNumber,
-      signatureDataUrl,
+      signatureId,
     };
   }
 
@@ -374,8 +446,12 @@ function AjanlatPage() {
     if (typeof p.warrantyText === "string") setWarrantyText(p.warrantyText);
     if (typeof p.comparisonNote === "string") setComparisonNote(p.comparisonNote);
     if (typeof p.quoteNumber === "string") setQuoteNumber(p.quoteNumber);
-    if (typeof p.signatureDataUrl === "string" || p.signatureDataUrl === null)
-      setSignatureDataUrl(p.signatureDataUrl);
+    if (typeof p.signatureId === "string") {
+      setSignatureId(p.signatureId);
+      void fetchSignatureDataUrl(p.signatureId).then((url) => {
+        if (url) setSignatureDataUrl(url);
+      });
+    }
     setWarnings([]);
     setPasted("");
   }
@@ -1098,6 +1174,16 @@ Web: https://projektorlampacsere.hu`;
     setPdfBusy(true);
     setPdfMsg(null);
     try {
+      // Ajánlat generálás: szerver dekódol AES-GCM → Base64 data URL a sablonhoz
+      let sigUrl = signatureDataUrl;
+      if (signatureId) {
+        const fresh = await fetchSignatureDataUrl(signatureId);
+        if (fresh) {
+          sigUrl = fresh;
+          setSignatureDataUrl(fresh);
+        }
+      }
+
       const pdfVersions: PdfVersion[] = enabledVersions.map((v) => {
         const t = versionTotals[v.key];
         return {
@@ -1162,7 +1248,7 @@ Web: https://projektorlampacsere.hu`;
           quoteNumber,
           quoteDate: today,
           deliveryDeadline: "4–14 munkanap",
-          signatureDataUrl,
+          signatureDataUrl: sigUrl,
           signerName: "Kiss Patrik Péter",
           signerRole: "ügyvezető, ADP-TOP Kft.",
         },
@@ -1706,25 +1792,41 @@ Web: https://projektorlampacsere.hu`;
                 </Cell>
                 <div className="grid gap-1">
                   <span className="text-xs font-medium">
-                    Aláírás-kép (egyszer feltöltve, a böngésző megőrzi)
+                    Aláírás-kép (titkosítva private_data-ban, AES-256-GCM)
                   </span>
                   <div className="flex items-center gap-2">
                     <input
                       type="file"
-                      accept="image/png,image/jpeg"
-                      onChange={(e) => onSignatureFile(e.target.files?.[0] ?? null)}
+                      accept="image/png,image/jpeg,image/webp"
+                      disabled={signatureBusy}
+                      onChange={(e) => {
+                        void onSignatureFile(e.target.files?.[0] ?? null);
+                        e.target.value = "";
+                      }}
                       className="text-xs flex-1"
                     />
-                    {signatureDataUrl && (
+                    {signatureId && (
                       <button
                         type="button"
-                        onClick={clearSignature}
-                        className="text-xs border border-input rounded px-2 py-1 hover:bg-accent"
+                        disabled={signatureBusy}
+                        onClick={() => void clearSignature()}
+                        className="text-xs border border-input rounded px-2 py-1 hover:bg-accent disabled:opacity-50"
                       >
                         Eltávolítás
                       </button>
                     )}
                   </div>
+                  {signatureBusy && (
+                    <span className="text-xs text-muted-foreground">Feltöltés / dekódolás…</span>
+                  )}
+                  {signatureErr && (
+                    <span className="text-xs text-destructive">{signatureErr}</span>
+                  )}
+                  {signatureId && (
+                    <span className="text-[10px] font-mono text-muted-foreground">
+                      id: {signatureId}
+                    </span>
+                  )}
                   {signatureDataUrl && (
                     <img
                       src={signatureDataUrl}

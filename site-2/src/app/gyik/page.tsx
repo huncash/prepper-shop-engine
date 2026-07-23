@@ -8,7 +8,8 @@ export const metadata: Metadata = {
 
 import { canonical } from "@/lib/seo";
 import { assetSrc } from "@/lib/asset";
-import menuResetImg from "@/assets/csere/menu-reset-lamp-hours.jpg";
+<img src="/assets/csere/menu-reset-lamp-hours.jpg" alt="Lámpa számláló nullázás" />
+
 
 const faqJsonLd: { q: string; a: string }[] = [
   {

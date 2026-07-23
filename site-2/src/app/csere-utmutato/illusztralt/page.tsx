@@ -8,8 +8,9 @@ export const metadata: Metadata = {
 
 import { canonical } from "@/lib/seo";
 import { assetSrc } from "@/lib/asset";
-import collage1 from "@/assets/csere/epson-steps-1-6.png";
-import collage2 from "@/assets/csere/epson-steps-7-11.png";
+<img src="/assets/csere/epson-steps-1-6.png" alt="Epson PowerLite 2140W/2155W/2245U/2250U/2255U/2265U lámpacsere útmutató - 1-6. lépés" />
+<img src="/assets/csere/epson-steps-7-11.png" alt="Epson PowerLite 2140W/2155W/2245U/2250U/2255U/2265U lámpacsere útmutató - 7-11. lépés" />
+</>
 
 function IllustratedGuide() {
   return (
