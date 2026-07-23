@@ -2,12 +2,14 @@ import Link from "next/link";
 import type { Product } from "@/data/catalog";
 import { getCategory, getProductStock } from "@/data/catalog";
 import { PriceBadge } from "@/components/PriceBadge";
-import lampLineDrawing from "@/assets/lamp-line-drawing.png";
-import uhpUheLampLineDrawing from "@/assets/uhp-uhe-lamp-line-drawing.png";
-import nshLampLineDrawing from "@/assets/nsh-lamp-line-drawing.png";
-import xenonLampLineDrawing from "@/assets/xenon-lamp-line-drawing.png";
-import metalHalideLampLineDrawing from "@/assets/metal-halide-lamp-line-drawing.png";
-import uvMedicalLampLineDrawing from "@/assets/uv-medical-lamp-line-drawing.png";
+
+// Sima string útvonalak a nyilvános public/assets mappára:
+const lampLineDrawing = "@/assets/lamp-line-drawing.png";
+const uhpUheLampLineDrawing = "@/assets/uhp-uhe-lamp-line-drawing.png";
+const nshLampLineDrawing = "@/assets/nsh-lamp-line-drawing.png";
+const xenonLampLineDrawing = "@/assets/xenon-lamp-line-drawing.png";
+const metalHalideLampLineDrawing = "@/assets/metal-halide-lamp-line-drawing.png";
+const uvMedicalLampLineDrawing = "@/assets/uv-medical-lamp-line-drawing.png";
 
 export function ProductCard({ product }: { product: Product }) {
   const cat = getCategory(product.categorySlug);
