@@ -1,11 +1,12 @@
 "use client";
 
+import { Suspense } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { categories, products, type Product } from "@/data/catalog";
 import { ProductCard } from "@/components/ProductCard";
 
-export default function CatalogPage() {
+function CatalogPageInner() {
   const sp = useSearchParams();
   const router = useRouter();
   const q = sp.get("q") ?? "";
@@ -121,5 +122,13 @@ export default function CatalogPage() {
         </section>
       </div>
     </div>
+  );
+}
+
+export default function CatalogPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CatalogPageInner />
+    </Suspense>
   );
 }
