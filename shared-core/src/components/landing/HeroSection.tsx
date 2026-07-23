@@ -1,5 +1,5 @@
-import { Button } from "@shared/src/components/ui/button";
-import { cn } from "@shared/src/lib/utils";
+import { Button } from "../ui/button";
+import { cn } from "../../lib/utils";
 
 export interface HeroSectionProps {
   title: string;

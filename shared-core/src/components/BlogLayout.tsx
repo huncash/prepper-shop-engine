@@ -1,5 +1,5 @@
 import type { Post } from "@shared/lib/blog";
-import { cn } from "@shared/src/lib/utils";
+import { cn } from "../lib/utils";
 
 export interface BlogLayoutProps {
   post: Post;

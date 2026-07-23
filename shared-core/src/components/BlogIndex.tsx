@@ -1,5 +1,5 @@
 import type { PostMeta } from "@shared/lib/blog";
-import { cn } from "@shared/src/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 export interface BlogIndexProps {
   posts: PostMeta[];

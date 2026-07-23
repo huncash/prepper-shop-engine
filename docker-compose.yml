@@ -54,11 +54,13 @@ services:
       - "3000:3000"
     volumes:
       - ./site-1:/app
-      - ./shared-core:/shared-core
+      - ./shared-core:/shared-core:ro
       - site-1-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
       - SHARED_CORE_PATH=/shared-core
+      - NEXT_PUBLIC_SITE_ID=site-1
+      - NEXT_PUBLIC_AUTH_URL=http://localhost:4001
       - API_URL=http://api:4000
       - AUTH_URL=http://auth-service:4001
     depends_on:
@@ -73,11 +75,13 @@ services:
       - "3001:3001"
     volumes:
       - ./site-2:/app
-      - ./shared-core:/shared-core
+      - ./shared-core:/shared-core:ro
       - site-2-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
       - SHARED_CORE_PATH=/shared-core
+      - NEXT_PUBLIC_SITE_ID=site-2
+      - NEXT_PUBLIC_AUTH_URL=http://localhost:4001
       - API_URL=http://api:4000
       - AUTH_URL=http://auth-service:4001
     depends_on:
@@ -92,11 +96,13 @@ services:
       - "3002:3002"
     volumes:
       - ./site-3:/app
-      - ./shared-core:/shared-core
+      - ./shared-core:/shared-core:ro
       - site-3-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
       - SHARED_CORE_PATH=/shared-core
+      - NEXT_PUBLIC_SITE_ID=site-3
+      - NEXT_PUBLIC_AUTH_URL=http://localhost:4001
       - API_URL=http://api:4000
       - AUTH_URL=http://auth-service:4001
     depends_on:
@@ -111,11 +117,13 @@ services:
       - "3003:3003"
     volumes:
       - ./site-4:/app
-      - ./shared-core:/shared-core
+      - ./shared-core:/shared-core:ro
       - site-4-node-modules:/app/node_modules
     environment:
       - NODE_ENV=development
       - SHARED_CORE_PATH=/shared-core
+      - NEXT_PUBLIC_SITE_ID=site-4
+      - NEXT_PUBLIC_AUTH_URL=http://localhost:4001
       - API_URL=http://api:4000
       - AUTH_URL=http://auth-service:4001
     depends_on:

@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build-all": "npm run build -w @prepper-shop/site-1 -w @prepper-shop/site-2 -w @prepper-shop/site-3 -w @prepper-shop/site-4",
+    "typecheck": "npm run typecheck --workspaces --if-present",
     "watch:images": "npm run watch:images --workspace @prepper-shop/shared-core",
     "process-images": "npm run process-images --workspace @prepper-shop/shared-core",
     "dev:api": "npm run dev:api --workspace @prepper-shop/shared-core",

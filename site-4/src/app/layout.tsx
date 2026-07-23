@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
 
-import "@shared/src/styles/globals.css";
-import "./globals.css";
+import { Footer } from "@shared/components/layout/Footer";
+import { Navbar } from "@shared/components/layout/Navbar";
+import "@shared/styles/globals.css";
 
 export const metadata: Metadata = {
-  title: "Prepper Shop — Site 4",
-  description: "Prepper shop storefront",
+  title: "Rendezvényárnyékolás",
+  description: "Lycra dekor ponyvák bérbeadása rendezvényekre",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="hu">
-      <body className="min-h-screen bg-background text-foreground antialiased">
-        {children}
+      <body className="flex min-h-screen flex-col bg-background text-foreground antialiased">
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
       </body>
     </html>
   );

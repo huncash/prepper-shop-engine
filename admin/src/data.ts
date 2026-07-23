@@ -1,7 +1,7 @@
 import { readFileSync, existsSync } from "node:fs";
 import { resolve } from "node:path";
 
-import type { Product } from "@shared/lib/data-provider";
+import type { Product } from "@shared/lib/types";
 
 import adminConfig from "@shared/src/config/api.json";
 

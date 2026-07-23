@@ -3,8 +3,8 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-} from "@shared/src/components/ui/card";
-import { cn } from "@shared/src/lib/utils";
+} from "../ui/card";
+import { cn } from "../../lib/utils";
 
 export interface Feature {
   icon: string;
@@ -14,7 +14,7 @@ export interface Feature {
 
 export interface FeatureGridProps {
   heading?: string;
-  features: Feature[];
+  features: readonly Feature[];
   className?: string;
 }
 

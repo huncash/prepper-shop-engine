@@ -2,17 +2,24 @@
 
 import { useState } from "react";
 
-import { authProvider } from "@shared/auth/auth-provider";
-import { getUserByEmail } from "@shared/lib/data-provider";
-import { Button } from "@shared/src/components/ui/button";
+import { authProvider, type Session } from "@shared/auth/auth-provider";
+import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@shared/src/components/ui/card";
-import { cn } from "@shared/src/lib/utils";
+} from "./ui/card";
+import { cn } from "../lib/utils";
+
+function getAuthBaseUrl(): string {
+  return (
+    process.env.NEXT_PUBLIC_AUTH_URL ??
+    process.env.AUTH_URL ??
+    "http://localhost:4001"
+  );
+}
 
 export interface LoginFormProps {
   onSuccess?: () => void;
@@ -30,14 +37,23 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
     setPending(true);
 
     try {
-      const user = getUserByEmail(email.trim());
+      const response = await fetch(`${getAuthBaseUrl()}/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
 
-      if (!user) {
-        setError("Felhasználó nem található.");
+      if (!response.ok) {
+        setError(
+          response.status === 401
+            ? "Felhasználó nem található."
+            : "Bejelentkezés sikertelen."
+        );
         return;
       }
 
-      authProvider.login(user, crypto.randomUUID());
+      const session = (await response.json()) as Session;
+      authProvider.setSession(session);
       onSuccess?.();
     } catch {
       setError("Bejelentkezés sikertelen.");
@@ -74,7 +90,7 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
                 "disabled:cursor-not-allowed disabled:opacity-50"
               )}
-              placeholder="admin@prepper.shop"
+              placeholder="admin@example.com"
             />
           </div>
 

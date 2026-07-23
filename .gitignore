@@ -11,6 +11,10 @@ shared-core/data/mock-db.json
 shared-core/data/images/raw/
 shared-core/data/images/webp/
 
+# üzleti / privát forrásadatok — soha ne kerüljenek a gitbe
+**/private_data/
+**/source_data.json
+
 # env
 .env
 .env.local
@@ -19,3 +23,6 @@ shared-core/data/images/webp/
 # build cache
 .turbo/
 *.tsbuildinfo
+
+# legacy
+_legacy_sources/

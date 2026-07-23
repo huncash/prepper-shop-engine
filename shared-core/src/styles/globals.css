@@ -4,7 +4,8 @@
 
 @layer base {
   body {
-    @apply font-sans text-text bg-background antialiased;
+    /* Javítva: text-text -> text-foreground */
+    @apply font-sans text-foreground bg-background antialiased;
   }
   h1, h2, h3 {
     @apply font-bold text-primary;

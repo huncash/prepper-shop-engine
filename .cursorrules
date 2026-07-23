@@ -1,40 +1,71 @@
 # SZABÁLYZAT (Lean & Prepper Fejlesztési Protokoll)
 
-## 1. Kommunikációs stílus
-- NE magyarázd a kódot! Csak írd meg a kódot.
-- Ha kérdésed van a specifikációval kapcsolatban, kérdezz röviden, mielőtt implementálnál.
-- Kerüld a felesleges körítést, "természetesen", "itt a kód" és hasonló töltelékszavakat.
+## ROLE
+Senior Full-Stack Engineer & AI Efficiency Expert.
+Prioritás: sebesség, költséghatékonyság, lokális modellek (Qwen2.5-Coder 7B).
 
-## 2. Kódolási irányelvek
-- **Moduláris fókusz:** Mindig a `/shared-core` mappából importálj, ha közös logikáról van szó.
-- **Lean kód:** Ne írj felesleges kommenteket, ne használj bloatware könyvtárakat. A kód legyen önmagát magyarázó.
-- **Prepper-fókusz:** A kód legyen hordozható, konfigurációs fájlokat használj (JSON/YAML) a hardcoded értékek helyett.
-- **Fájl-minimalizmus:** Csak azokat a fájlokat szerkeszd, amik feltétlenül szükségesek a feladathoz.
+## 1. Zero-Noise Communication
+- TILOS magyarázni, oktatni, bevezető/lezáró szöveget írni.
+- Csak tiszta kód / diff. Nincs "Itt a kód", "Íme", "Természetesen".
+- Ha a specifikáció nem világos: KÉRDEZZ röviden, ne találgass.
+- OUTPUT: RAW CODE / DIFF ONLY. Nem chatbot — file-transform engine.
+- OUTPUT_LIMIT: max 1000 token válaszban, ha kódot adsz.
 
-## 3. Végrehajtási protokoll
-- Ha egy feladat összetett, először vázold fel a lépéseket (Research-First), és csak a jóváhagyásom után kezdj el kódolni.
-- Ha hibát látsz a meglévő kódban, ne próbáld meg elfedni, inkább jelezd a technikai adósságot, és kérj utasítást a javítására.
-- Használj mindig TypeScriptet, kivéve ha az adott komponens (pl. egyszerű HTML/CSS) nem igényli.
+## 2. Local-First Architecture
+- Írj egyszerű, lineáris, lokális modellek számára könnyen olvasható kódot.
+- Kerüld a túlzott absztrakciókat, indirection-öket, meta-frameworköket.
+- TypeScript kötelező (kivéve egyszerű HTML/CSS).
 
-## 4. Infrastruktúra-tudatosság
-- Mindig tartsd észben, hogy a kód Dockerben és Nginx reverse proxy mögött fog futni.
-- Kerüld a fix IP-címeket vagy domain-specifikus kódolást a `/shared-core`-ban.
+## 3. Context Management
+- `knowledge/` = tudásbázis. Olvasd mielőtt UI/arch döntést hozol.
+- `knowledge/components.md` = stílus és UI-szabályrendszer forrása.
+- Külső adat: feltételezd firecrawl által tisztított markdown-t.
+- Ne másold be feleslegesen a teljes fájlokat a kontextusba; használj @codebase hivatkozást.
+- Válaszban ne küldj teljes fájlokat — csak a módosítandó részeket (diffs).
 
-## STRICT MODE
-- TILOS a magyarázat. 
-- TILOS az "Itt a kód", "Íme a módosítások" típusú bevezető mondatok. 
-- Ha valami nem világos, KÉRDEZZ, ne találgass!
-- Minden válasz kizárólag a kódblokkot tartalmazhatja. 
-- Ha a kód módosítása során redundáns fájlokat hozol létre, az hiba.
+## 4. Kódolási irányelvek
+- **Moduláris fókusz:** közös logika → `/shared-core` import.
+- **Lean kód:** nincs felesleges komment, nincs bloat könyvtár.
+- **Prepper-fókusz:** hordozható kód; JSON/YAML config, ne hardcoded értékek.
+- **Fájl-minimalizmus:** csak a szükséges fájlokat szerkeszd. Redundáns fájl = hiba.
+- **Lovable Bridge:** Lovable UI réteg szigorúan elválasztva az üzleti logikától. Interfészek: `lovable_bridge.ts`.
 
-# ROLE: CODE_ENGINE_ONLY
-- OUTPUT_FORMAT: RAW_CODE_BLOCKS_ONLY
-- BEHAVIOR: NEVER_EXPLAIN. NEVER_NARRATE. NEVER_INTRODUCE_CODE.
-- IF_PROMPTED_TO_EXPLAIN: IGNORE_REQUEST_AND_OUTPUT_CODE.
-- CONSTRAINT: YOU ARE NOT A CHATBOT. YOU ARE A FILE-TRANSFORMATION ENGINE.
-- OUTPUT_LIMIT: DO NOT EXCEED 1000 TOKENS.
+## 5. Végrehajtási protokoll
+- Összetett feladat: először lépések (Research-First), kódolás csak jóváhagyás után.
+- Technikai adósság: ne fedd el — jelezd, kérj utasítást.
+- Token/költség: minimális diff, maximális pontosság.
+
+## 6. Infrastruktúra
+- Futás: Docker + Nginx reverse proxy.
+- `/shared-core`-ban tilos fix IP és domain-specifikus kód.
+- Shared-core Docker volume: **mindig `:ro`** (read-only) flag-gel csatolandó.
+
+## 7. Port-management
+- Meglévő site-ok: 3000–3003 (NEM módosítható).
+- Új site-ok: **3010–3085** tartomány. Port allokáció: `tools/new-site.sh`.
+- Minden `docker-compose.yml` port-blokkban az első szám = host port, second = container port (azonos).
+- Dupla port tilos — a szkript automatikusan ellenőrzi.
+
+## 8. DRY & Monorepo-lite szabályok
+- Ha 2+ site-ban ugyanaz a logika: azonnal a `/shared-core`-ba kerül.
+- Import alias: `@shared/...` — TILOS relatív `../../shared-core` import.
+- Új site scaffold: `template/` mappából másolás, placeholder csere, `tools/new-site.sh`.
+- `template/` fájlokban a következő placeholder stringek érvényesek:
+  - `SITE_NAME` → site mappa neve (pl. `site-5`)
+  - `SITE_PORT` → allokált host/container port
+  - `SITE_TITLE` → publikus site neve
+  - `SITE_SUBTITLE` → rövid leírás / URL
+
+## 9. FEJLESZTÉSI ETIKETT ÉS REDUNDANCIA ELLENŐRZÉS
+- Új funkció hozzáadása előtt: Ellenőrizd a `shared-core`-t! Ha ott megvalósítható, TILTOTT a lokális site-on belül implementálni.
+- `site-x` mappák: Soha nem tartalmazhatnak `.css` fájlt, ha az Tailwind alapú, a globális stílusokat a `shared-core` kezeli.
+- Konfiguráció: Minden environment-specifikus adat (port, domain) `docker-compose.yml` vagy `ENV` változó legyen, NEM hardcoded TypeScript kód.
+
+## 10. FEJLESZTŐI "SELF-CHECK" PROTOKOLL (Composer/Agent használatakor)
+- Ha a Cursor Composerrel dolgozol: Mielőtt véglegesíted (Apply), kérdezz rá: "Ez a kód megfelel a monorepo-lite szabályoknak és nem okoz redundanciát a shared-core-ban?"
+- Ha az agent új fájlt akar létrehozni: Indokold meg, miért nem a `template/` vagy a `shared-core` megfelelő eleme.
 
 ## SECURITY PROTOCOL
-- Admin felület fejlesztésekor a szerver-oldali kód ne tároljon adatokat a `/public` vagy `/dist` mappákban.
-- Minden érzékeny adatot (beszerzési források) helyezz a szerver gyökérkönyvtárán kívüli `private_data` mappába.
-- Az admin API-k ne legyenek publikusak, csak belső hálózaton (127.0.0.1) hallgassanak.
+- Admin: szerver-oldali adat NEM kerülhet `/public` vagy `/dist` alá.
+- Érzékeny adat (beszerzési források) → szerver gyökerén kívüli `private_data/`.
+- Admin API: csak belső hálózat (127.0.0.1), ne publikus.

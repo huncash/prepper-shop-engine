@@ -3,9 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useCallback } from "react";
 
-import type { Product } from "@shared/lib/data-provider";
-import { ProductCard } from "@shared/src/components/ProductCard";
-import { cn } from "@shared/src/lib/utils";
+import type { Product } from "@shared/lib/types";
+import { ProductCard } from "./ProductCard";
+import { cn } from "../lib/utils";
 
 type SortKey = "name-asc" | "name-desc" | "price-asc" | "price-desc";
 

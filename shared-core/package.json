@@ -9,33 +9,37 @@
     "start:api": "tsx src/server.ts",
     "start:auth": "tsx src/auth-server.ts",
     "dev:api": "tsx watch src/server.ts",
-    "dev:auth": "tsx watch src/auth-server.ts"
+    "dev:auth": "tsx watch src/auth-server.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
   },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "exports": {
     ".": "./src/index.ts",
     "./data-provider": "./lib/data-provider.ts",
+    "./types": "./lib/types.ts",
     "./api-client": "./src/api-client.ts",
     "./auth/auth-provider": "./auth/auth-provider.ts",
     "./cart-store": "./lib/cart-store.ts",
-    "./styles": "./src/styles/globals.css"
+    "./styles": "./src/styles/globals.css",
+    "./lib/utils": "./src/lib/utils.ts"
   },
   "peerDependencies": {
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },
   "dependencies": {
-    "better-sqlite3": "^11.10.0",
-    "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "lunr": "^2.3.9",
-    "gray-matter": "^4.0.3",
-    "remark": "^15.0.1",
-    "remark-html": "^16.0.1",
     "@radix-ui/react-slot": "^1.2.3",
+    "better-sqlite3": "^11.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "gray-matter": "^4.0.3",
+    "lunr": "^2.3.9",
+    "remark": "^15.0.1",
+    "remark-html": "^16.0.1",
+    "server-only": "^0.0.1",
     "sharp": "^0.34.2",
     "tailwind-merge": "^3.3.1"
   },
@@ -44,7 +48,6 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/lunr": "^2.3.7",
-  
     "@types/node": "^24.0.13",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",

@@ -11,8 +11,14 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["./*"]
+      "@shared/lib/*": ["./lib/*", "./src/lib/*"],
+      "@shared/auth/*": ["./auth/*"],
+      "@shared/config/*": ["./src/config/*"],
+      "@shared/templates/*": ["./templates/*"],
+      "@shared/data/*": ["./data/*"],
+      "@shared/*": ["./src/*"],
+      "server-only": ["./shims/server-only.ts"]
     }
   },
-  "include": ["src", "lib", "auth", "scripts", "templates"]
+  "include": ["src", "lib", "auth", "scripts", "templates", "shims"]
 }

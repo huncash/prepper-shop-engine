@@ -1,6 +1,6 @@
 import lunr from "lunr";
 
-import type { Product } from "@shared/lib/data-provider";
+import type { Product } from "@shared/lib/types";
 
 let index: lunr.Index | null = null;
 let indexed: Product[] = [];

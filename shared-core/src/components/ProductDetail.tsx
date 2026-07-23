@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import type { Product } from "@shared/lib/data-provider";
-import { Button } from "@shared/src/components/ui/button";
-import { Badge } from "@shared/src/components/ui/badge";
+import type { Product } from "@shared/lib/types";
+import { Button } from "./ui/button";
+import { Badge } from "./ui/badge";
 
 export interface ProductDetailProps {
   product: Product;

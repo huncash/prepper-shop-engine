@@ -1,4 +1,4 @@
-import type { Product } from "@shared/lib/data-provider";
+import type { Product } from "@shared/lib/types";
 
 function getApiBaseUrl(): string {
   return process.env.API_URL ?? "http://localhost:4000";

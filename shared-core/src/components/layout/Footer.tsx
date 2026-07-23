@@ -1,6 +1,6 @@
 import { COMPANY_INFO } from "@shared/config/company-data";
 import { SITE_CONFIG } from "@shared/config/site-config";
-import { cn } from "@shared/src/lib/utils";
+import { cn } from "@shared/lib/utils";
 
 const siteId = process.env.NEXT_PUBLIC_SITE_ID ?? "site-1";
 const siteConfig = SITE_CONFIG[siteId] ?? SITE_CONFIG["site-1"];

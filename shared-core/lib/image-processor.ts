@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 
 import sharp from "sharp";
 
-import processorConfig from "@shared/src/config/image-processor.json";
+import processorConfig from "../src/config/image-processor.json";
 
 const packageRoot = join(dirname(fileURLToPath(import.meta.url)), "..", "..");
 

@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 
-import apiConfig from "@shared/src/config/api.json";
+import apiConfig from "./config/api.json";
 import {
   closeDataProvider,
   getProductById,
@@ -19,6 +19,7 @@ app.get("/health", (_req, res) => {
   res.json({ status: "ok" });
 });
 
+// Publikus DTO: getProducts / getProductById már sanitizál (nincs Forrás / cost / bulbOnly).
 app.get("/api/products", (_req, res) => {
   try {
     res.json(getProducts());

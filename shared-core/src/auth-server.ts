@@ -1,7 +1,7 @@
 import cors from "cors";
 import express from "express";
 
-import apiConfig from "@shared/src/config/api.json";
+import apiConfig from "./config/api.json";
 import { getUserByEmail } from "@shared/lib/data-provider";
 import { authProvider } from "@shared/auth/auth-provider";
 

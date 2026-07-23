@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import { Footer } from "@shared/components/layout/Footer";
 import { Navbar } from "@shared/components/layout/Navbar";
 import "@shared/styles/globals.css";
-import "./globals.css";
 
 export const metadata: Metadata = {
   title: "VRGO",

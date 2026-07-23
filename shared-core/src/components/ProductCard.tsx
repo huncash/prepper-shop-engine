@@ -1,5 +1,5 @@
-import { Badge } from "@shared/src/components/ui/badge";
-import { Button } from "@shared/src/components/ui/button";
+import { Badge } from "./ui/badge";
+import { Button } from "./ui/button";
 import {
   Card,
   CardContent,
@@ -7,8 +7,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@shared/src/components/ui/card";
-import { cn } from "@shared/src/lib/utils";
+} from "./ui/card";
+import { cn } from "../lib/utils";
 
 export interface ProductCardProps {
   title: string;

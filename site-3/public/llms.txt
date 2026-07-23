@@ -1,0 +1,23 @@
+# offlinebiztonsag.hu
+
+> Offline biztonságtechnika, off-grid infrastruktúra és kapcsolódó ipari ellátás szakosított B2B beszállítója magyarországi cégeknek, intézményeknek és integrátoroknak. Üzemeltető: ADP-TOP Kft.
+
+Az offlinebiztonsag.hu tizenegy pilléren szállít: helyi (NVR-alapú, internet-független) kamerarendszerek, szigetüzemű energiaellátás, passzív nappali fény (Fresnel-lencsés napfény-kollektor + kvarcüveg-száloptika, Dayluxa), intézményi vízszűrés, HomeBiogas, off-grid szennyvíz-kezelés, behatolásvédelmi szenzorika, fémipari munka (CNC + okleveles hegesztőmérnöki háttér), mesh-kommunikáció, üzletmenet-folytonossági (BCP) csomagok és prepper tech — szerződött készlettel, tervezhető átfutással, tételes áfás számlával.
+
+## Pages
+
+- [Főoldal](/): Áttekintés, kiemelt termékpillérek, ellátási modell.
+- [Rólunk](/about): Az ADP-TOP Kft. és az OfflineBiztonsag.hu bemutatása.
+- [Katalógus](/katalogus): Teljes termékkatalógus pillér és műszaki paraméter szerint.
+- [Árképzés](/arazas): Minőség, ár és átfutási idő összefüggése B2B ellátásban.
+- [B2B feltételek](/b2b): Viszonteladói és intézményi együttműködési feltételek.
+- [Tudásbázis](/tudasbazis): Szakmai cikkek és műszaki útmutatók.
+- [GYIK](/gyik): Gyakori kérdések — választás, garancia, szállítás.
+- [Kapcsolat](/contact): Kapcsolat és árajánlat-kérés.
+- [Árajánlatkérés](/quote): Tételes árajánlat-kérő űrlap (B2B).
+
+## Optional
+
+- [ÁSZF](/aszf): Általános Szerződési Feltételek.
+- [Adatkezelési tájékoztató](/adatvedelem): GDPR adatkezelési tájékoztató.
+- [Impresszum](/impresszum): Üzemeltetői és tárhely-adatok.

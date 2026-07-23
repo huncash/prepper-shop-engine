@@ -1,5 +1,5 @@
-import authConfig from "@shared/src/config/auth.json";
-import type { User, UserRole } from "@shared/lib/data-provider";
+import authConfig from "../src/config/auth.json";
+import type { User, UserRole } from "@shared/lib/types";
 
 export type AdminLevel = UserRole;
 

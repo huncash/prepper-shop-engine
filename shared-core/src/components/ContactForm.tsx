@@ -2,8 +2,8 @@
 
 import { useState, useTransition } from "react";
 import { useCartStore, clearCart } from "@shared/lib/cart-store";
-import { Button } from "@shared/src/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@shared/src/components/ui/card";
+import { Button } from "./ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 
 export interface ContactFormProps {
   actionUrl?: string;

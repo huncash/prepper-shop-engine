@@ -21,6 +21,8 @@
       "@shared/auth/*": ["./shared-core/auth/*"],
       "@shared/templates/*": ["./shared-core/templates/*"],
       "@shared/config/*": ["./shared-core/src/config/*"],
+      "@shared/data/*": ["./shared-core/data/*"],
+      "@shared/styles/*": ["./shared-core/src/styles/*"],
       "@shared/*": ["./shared-core/src/*"]
     }
   },

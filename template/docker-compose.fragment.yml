@@ -1,0 +1,28 @@
+# docker-compose fragment — új site hozzáadásához
+# Illeszd be a gyökér docker-compose.yml services: blokkjába.
+# SITE_NAME:  pl. site-5
+# SITE_PORT:  szabad port 3010–3085 közül (lásd: tools/new-site.sh)
+# SITE_ID:    megegyezik SITE_NAME-mel
+
+  SITE_NAME:
+    build:
+      context: .
+      dockerfile: SITE_NAME/Dockerfile
+    ports:
+      - "SITE_PORT:SITE_PORT"
+    volumes:
+      - ./SITE_NAME:/app
+      - ./shared-core:/shared-core:ro
+      - SITE_NAME-node-modules:/app/node_modules
+    environment:
+      - NODE_ENV=development
+      - SHARED_CORE_PATH=/shared-core
+      - NEXT_PUBLIC_SITE_ID=SITE_NAME
+      - API_URL=http://api:4000
+      - AUTH_URL=http://auth-service:4001
+    depends_on:
+      - api
+      - auth-service
+
+# volumes blokkba add hozzá:
+#   SITE_NAME-node-modules:
