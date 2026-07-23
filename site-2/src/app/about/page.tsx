@@ -7,8 +7,6 @@ export const metadata: Metadata = {
 };
 
 import { canonical } from "@/lib/seo";
-import { assetSrc } from "@/lib/asset";
-import trustBadge from "@/assets/trust-badge.png";
 
 function AboutPage() {
   return (
@@ -41,7 +39,7 @@ function AboutPage() {
       </p>
       <div className="mt-8 max-w-2xl">
         <img
-          src={assetSrc(trustBadge)}
+          src="/assets/trust-badge.png"
           alt="projektorlampacsere.hu megbízhatósági jelvény"
           className="w-full h-auto"
           loading="lazy"

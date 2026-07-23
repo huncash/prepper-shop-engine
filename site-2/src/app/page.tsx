@@ -3,18 +3,15 @@ import type { Metadata } from "next";
 import { CONTENT } from "@/data/content";
 import { products } from "@/data/catalog";
 import { ProductCard } from "@/components/ProductCard";
-import lampDiagram from "@/assets/lamp-replacement-diagram.png";
-import lampModuleImg from "@/assets/projector-lamp-module.jpg";
+
+const lampDiagram = "/assets/lamp-replacement-diagram.png";
+const lampModuleImg = "/assets/projector-lamp-module.jpg";
 
 export const metadata: Metadata = {
   title: "Projektor izzó és lámpamodul B2B — projektorlampacsere.hu",
   description:
     "Projektor izzó és lámpamodul beszerzés intézményeknek: Epson, BenQ, NEC, Sony, Philips UHP, Osram, Ushio. Tételes árajánlat, 6–12 munkanap.",
 };
-
-function assetSrc(img: string | { src: string }): string {
-  return typeof img === "string" ? img : img.src;
-}
 
 function Home() {
   const featured = products.slice(0, 4);
@@ -54,7 +51,7 @@ function Home() {
           </div>
           <div className="bg-primary-deep/40 rounded p-4 flex items-center justify-center">
             <img
-              src={assetSrc(lampModuleImg)}
+              src={lampModuleImg}
               alt="Eredeti diszkont projektor lámpamodul — gyári izzóval"
               width={1280}
               height={960}
@@ -169,7 +166,7 @@ function Home() {
         </div>
         <div className="bg-surface border border-border rounded p-6 flex items-center justify-center">
           <img
-            src={assetSrc(lampDiagram)}
+            src={lampDiagram}
             alt="Projektor lámpamodul csere sematikus vázlata — szervizfedél, modul, kioldó"
             width={1280}
             height={960}

@@ -4,7 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { categories } from "@/data/catalog";
 import { company } from "@/data/company";
-import trustBadge from "@/assets/trust-badge.png";
 
 export function SiteFooter() {
   const pathname = usePathname();
@@ -23,7 +22,7 @@ export function SiteFooter() {
         <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-8 text-xs">
           <div className="col-span-2 max-w-md">
             <img
-              src={typeof trustBadge === "string" ? trustBadge : trustBadge.src}
+              src="/assets/trust-badge.png"
               alt="ADP-TOP — tervezett projektor-fényforrás ellátás, eredeti gyári izzó dokumentált ellátási láncból (alapítva 2006)"
               loading="lazy"
               width={1576}

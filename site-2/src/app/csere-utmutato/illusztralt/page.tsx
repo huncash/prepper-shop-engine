@@ -7,10 +7,9 @@ export const metadata: Metadata = {
 };
 
 import { canonical } from "@/lib/seo";
-import { assetSrc } from "@/lib/asset";
-<img src="/assets/csere/epson-steps-1-6.png" alt="Epson PowerLite 2140W/2155W/2245U/2250U/2255U/2265U lámpacsere útmutató - 1-6. lépés" />
-<img src="/assets/csere/epson-steps-7-11.png" alt="Epson PowerLite 2140W/2155W/2245U/2250U/2255U/2265U lámpacsere útmutató - 7-11. lépés" />
-</>
+
+const collage1 = "/assets/csere/epson-steps-1-6.png";
+const collage2 = "/assets/csere/epson-steps-7-11.png";
 
 function IllustratedGuide() {
   return (
@@ -150,7 +149,7 @@ function Step({
   title: string;
   body?: string;
   items?: string[];
-  img: string | { src: string };
+  img: string;
   footnote?: string;
 }) {
   return (
@@ -174,7 +173,7 @@ function Step({
       </div>
       <div className="mt-5 bg-white border border-border rounded overflow-hidden">
         <img
-          src={assetSrc(img)}
+          src={img}
           alt={`${label} — ${title}`}
           loading="lazy"
           width={1024}

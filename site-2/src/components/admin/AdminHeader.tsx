@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import logoIcon from "@/assets/logo-icon.png";
-import { assetSrc } from "@/lib/asset";
 
 export function AdminHeader({
   badge,
@@ -15,7 +13,7 @@ export function AdminHeader({
     <header className="mb-4 flex flex-wrap items-center justify-between gap-4 border-b border-border pb-3">
       <div className="flex items-center gap-3 min-w-0">
         <img
-          src={assetSrc(logoIcon)}
+          src="/assets/logo-icon.png"
           alt="Projektorlámpacsere.hu logó"
           width={44}
           height={44}

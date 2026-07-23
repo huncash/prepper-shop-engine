@@ -7,9 +7,8 @@ export const metadata: Metadata = {
 };
 
 import { canonical } from "@/lib/seo";
-import { assetSrc } from "@/lib/asset";
-<img src="/assets/csere/menu-reset-lamp-hours.jpg" alt="Lámpa számláló nullázás" />
 
+const menuResetImg = "/assets/csere/menu-reset-lamp-hours.jpg";
 
 const faqJsonLd: { q: string; a: string }[] = [
   {
@@ -260,7 +259,7 @@ const sections: { title: string; intro?: string; items: Faq[] }[] = [
             </ol>
             <figure className="mt-4 border border-border rounded overflow-hidden bg-white">
               <img
-                src={assetSrc(menuResetImg)}
+                src={menuResetImg}
                 alt="Projektor menü — Reset Lamp Hours menüpont kiválasztása"
                 loading="lazy"
                 className="w-full h-auto"

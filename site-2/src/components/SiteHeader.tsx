@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, X } from "lucide-react";
-import logoIcon from "@/assets/logo-icon.png";
 
 const navLinks = [
   { href: "/katalogus", label: "Katalógus" },
@@ -33,7 +32,7 @@ export function SiteHeader() {
           className="flex items-center gap-2.5 font-bold tracking-tight text-foreground"
         >
           <img
-            src={logoIcon.src}
+            src="/assets/logo-icon.png"
             alt="projektorlampacsere.hu logó"
             width={36}
             height={36}

@@ -263,9 +263,8 @@ function AjanlatPage() {
 
   async function loadDefaultSignatureAsset() {
     try {
-      const mod = await import("@/assets/signature-kiss-patrik.png");
-      const url = (mod.default as { src: string }).src;
-      const res = await fetch(url);
+      const res = await fetch("/assets/signature-kiss-patrik.png");
+      if (!res.ok) return;
       const blob = await res.blob();
       const reader = new FileReader();
       reader.onload = () => setSignatureDataUrl(String(reader.result || ""));

@@ -1,6 +1,7 @@
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import logoIcon from "@/assets/logo-icon.png";
+
+const logoIcon = "/assets/logo-icon.png";
 
 /* -------------------------------------------------------------------------- */
 /*  PDF-export — ugyanazokból a forrás-szövegekből, amiket az e-mail is használ */

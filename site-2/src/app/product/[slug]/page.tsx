@@ -4,13 +4,13 @@ import type { Metadata } from "next";
 import { getCategory, getProduct, getProductStock, type Category, type Product } from "@/data/catalog";
 import { getDeliveryPromise } from "@/data/shipping";
 import { PriceBadge } from "@/components/PriceBadge";
-import { assetSrc } from "@/lib/asset";
-import lampModuleImg from "@/assets/projector-lamp-module.jpg";
-import uhpUheLampLineDrawing from "@/assets/uhp-uhe-lamp-line-drawing.png";
-import nshLampLineDrawing from "@/assets/nsh-lamp-line-drawing.png";
-import xenonLampLineDrawing from "@/assets/xenon-lamp-line-drawing.png";
-import metalHalideLampLineDrawing from "@/assets/metal-halide-lamp-line-drawing.png";
-import uvMedicalLampLineDrawing from "@/assets/uv-medical-lamp-line-drawing.png";
+
+const lampModuleImg = "/assets/projector-lamp-module.jpg";
+const uhpUheLampLineDrawing = "/assets/uhp-uhe-lamp-line-drawing.png";
+const nshLampLineDrawing = "/assets/nsh-lamp-line-drawing.png";
+const xenonLampLineDrawing = "/assets/xenon-lamp-line-drawing.png";
+const metalHalideLampLineDrawing = "/assets/metal-halide-lamp-line-drawing.png";
+const uvMedicalLampLineDrawing = "/assets/uv-medical-lamp-line-drawing.png";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -78,7 +78,7 @@ function ProductView({ product, category }: { product: Product; category: Catego
         <figure className="m-0">
           <div className="bg-surface border border-border rounded aspect-square overflow-hidden flex items-center justify-center">
             <img
-              src={assetSrc(productImage)}
+              src={productImage}
               alt={`${product.name} — eredeti diszkont projektor lámpamodul illusztráció`}
               width={1280}
               height={960}
