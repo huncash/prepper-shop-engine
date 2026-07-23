@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 
+import { authProvider } from "@shared/auth/auth-provider";
 import { Button } from "@shared/src/components/ui/button";
 import {
   Card,
@@ -15,6 +16,8 @@ const ADMIN_API =
   typeof window !== "undefined"
     ? (process.env.NEXT_PUBLIC_ADMIN_URL ?? "http://127.0.0.1:4002")
     : "http://127.0.0.1:4002";
+
+const MAX_UPLOAD_BYTES = 1024 * 1024;
 
 type UploadState = "idle" | "pending" | "success" | "error";
 
@@ -35,12 +38,25 @@ export function Upload() {
     setMessage(null);
 
     try {
+      if (file.size > MAX_UPLOAD_BYTES) {
+        throw new Error("A fájl túl nagy (max 1 MB).");
+      }
+
+      const token = authProvider.getAccessToken();
+      if (!token) {
+        throw new Error("Nincs érvényes munkamenet. Jelentkezz be.");
+      }
+
       const text = await file.text();
       JSON.parse(text);
 
       const res = await fetch(`${ADMIN_API}/admin/upload`, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        credentials: "include",
         body: text,
       });
 

@@ -1,14 +1,9 @@
 import authConfig from "../src/config/auth.json";
 import type { User, UserRole } from "@shared/lib/types";
+import type { PublicSession } from "./session-token";
 
 export type AdminLevel = UserRole;
-
-export interface Session {
-  token: string;
-  user: User;
-  createdAt: string;
-  expiresAt: string;
-}
+export type Session = PublicSession;
 
 interface AuthState {
   session: Session | null;
@@ -18,40 +13,17 @@ function resolveRoleLevel(role: AdminLevel): number {
   return authConfig.roles[role] ?? authConfig.roles.guest;
 }
 
-function createSession(user: User, token: string): Session {
-  const createdAt = new Date();
-  const expiresAt = new Date(
-    createdAt.getTime() + authConfig.sessionTtlSeconds * 1000
-  );
-
-  return {
-    token,
-    user,
-    createdAt: createdAt.toISOString(),
-    expiresAt: expiresAt.toISOString(),
-  };
-}
-
 function isSessionValid(session: Session | null): session is Session {
-  if (!session) {
+  if (!session?.token || !session.user) {
     return false;
   }
 
   return new Date(session.expiresAt).getTime() > Date.now();
 }
 
+/** Kliens / UI session state — nem forrás a szerveroldali API-védelemhez. */
 export class AuthProvider {
   private state: AuthState = { session: null };
-
-  login(user: User, token: string): Session {
-    const session = createSession(user, token);
-    this.state.session = session;
-    return session;
-  }
-
-  logout(): void {
-    this.state.session = null;
-  }
 
   setSession(session: Session | null): void {
     if (session && !isSessionValid(session)) {
@@ -71,12 +43,20 @@ export class AuthProvider {
     return this.state.session;
   }
 
+  getAccessToken(): string | null {
+    return this.getSession()?.token ?? null;
+  }
+
   getUser(): User | null {
     return this.getSession()?.user ?? null;
   }
 
   isAuthenticated(): boolean {
     return this.getSession() !== null;
+  }
+
+  logout(): void {
+    this.state.session = null;
   }
 
   getAdminLevel(): number {

@@ -1,15 +1,22 @@
 import "server-only";
 
-import { readFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
 
 import type { Product, User, UserRole } from "./types";
 
 export type { Product, User, UserRole };
 
+/** Belső user rekord — passwordHash soha ne kerüljön publikus DTO-ba. */
+export interface StoredUser extends User {
+  passwordHash?: string;
+}
+
+export type RawProduct = Product & Record<string, unknown>;
+
 interface SourceData {
-  users?: User[];
-  products: Array<Product & Record<string, unknown>>;
+  users?: StoredUser[];
+  products: RawProduct[];
 }
 
 const sourcePath = resolve(
@@ -84,20 +91,88 @@ export function getProductById(id: number): Product | null {
 }
 
 /** Admin / belső használatra — sanitizálás nélkül. */
-export function getRawProducts(): Array<Product & Record<string, unknown>> {
+export function getRawProducts(): RawProduct[] {
   return loadSource().products;
 }
 
-export function getUsers(): User[] {
-  return loadSource().users ?? [];
+export function getRawProductById(id: number): RawProduct | null {
+  return getRawProducts().find((p) => p.id === id) ?? null;
 }
 
-export function getUserById(id: string): User | null {
+function persistSource(data: SourceData): void {
+  mkdirSync(dirname(sourcePath), { recursive: true });
+  const tmp = `${sourcePath}.${process.pid}.tmp`;
+  writeFileSync(tmp, JSON.stringify(data, null, 2), "utf-8");
+  renameSync(tmp, sourcePath);
+}
+
+/** Teljes private source mentése (admin). */
+export function saveSourceData(data: SourceData): void {
+  if (!Array.isArray(data.products)) {
+    throw new Error("Invalid source: products must be an array");
+  }
+  persistSource({
+    users: data.users,
+    products: data.products,
+  });
+}
+
+/** Új vagy meglévő nyers termék upsert (admin). */
+export function upsertRawProduct(product: RawProduct): RawProduct {
+  if (typeof product.id !== "number" || !Number.isFinite(product.id)) {
+    throw new Error("Product id must be a finite number");
+  }
+  if (typeof product.name !== "string" || !product.name.trim()) {
+    throw new Error("Product name required");
+  }
+  if (typeof product.price !== "number" || !Number.isFinite(product.price)) {
+    throw new Error("Product price must be a finite number");
+  }
+
+  const source = loadSource();
+  const idx = source.products.findIndex((p) => p.id === product.id);
+  const cleaned = stripDangerousKeys(product);
+  if (idx >= 0) {
+    source.products[idx] = { ...source.products[idx], ...cleaned, id: product.id };
+  } else {
+    source.products.push(cleaned);
+  }
+  persistSource(source);
+  return getRawProductById(product.id)!;
+}
+
+export function deleteRawProduct(id: number): boolean {
+  const source = loadSource();
+  const before = source.products.length;
+  source.products = source.products.filter((p) => p.id !== id);
+  if (source.products.length === before) return false;
+  persistSource(source);
+  return true;
+}
+
+function stripDangerousKeys(value: RawProduct): RawProduct {
+  const banned = new Set(["__proto__", "prototype", "constructor"]);
+  return Object.fromEntries(
+    Object.entries(value).filter(([key]) => !banned.has(key)),
+  ) as RawProduct;
+}
+
+export function getUsers(): StoredUser[] {
+  return (loadSource().users ?? []).map((u) => ({
+    ...u,
+    id: String(u.id),
+  }));
+}
+
+export function getUserById(id: string): StoredUser | null {
   return getUsers().find((u) => u.id === id) ?? null;
 }
 
-export function getUserByEmail(email: string): User | null {
-  return getUsers().find((u) => u.email === email) ?? null;
+export function getUserByEmail(email: string): StoredUser | null {
+  const normalized = email.trim().toLowerCase();
+  return (
+    getUsers().find((u) => u.email.trim().toLowerCase() === normalized) ?? null
+  );
 }
 
 export function closeDataProvider(): void {}

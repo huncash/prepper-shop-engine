@@ -14,6 +14,7 @@ services:
       - ADMIN_HOST=127.0.0.1
       - ADMIN_PORT=4002
       - PRIVATE_DATA_PATH=/root/private_data/source_data.json
+      - SESSION_SECRET=dev-session-secret-change-me
     depends_on:
       - auth-service
 
@@ -45,6 +46,12 @@ services:
       - NODE_ENV=development
       - AUTH_HOST=0.0.0.0
       - AUTH_PORT=4001
+      - SESSION_SECRET=dev-session-secret-change-me
+      - AUTH_ADMIN_EMAIL=admin@localhost
+      - AUTH_ADMIN_PASSWORD_HASH=$$2b$$10$$UB6g93Lt4wqexGta/4r6S.NOyVe0BT9N1h6vTe085cXVy7exBVcAO
+      - AUTH_ADMIN_ROLE=admin
+      - CORS_ORIGINS=http://localhost:3000,http://localhost:3001,http://localhost:3002,http://localhost:3003
+      - AUTH_COOKIE_SECURE=false
 
   site-1:
     build:

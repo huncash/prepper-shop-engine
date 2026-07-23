@@ -69,3 +69,19 @@ Prioritás: sebesség, költséghatékonyság, lokális modellek (Qwen2.5-Coder 
 - Admin: szerver-oldali adat NEM kerülhet `/public` vagy `/dist` alá.
 - Érzékeny adat (beszerzési források) → szerver gyökerén kívüli `private_data/`.
 - Admin API: csak belső hálózat (127.0.0.1), ne publikus.
+
+[SZIGORÚ FEJLESZTÉSI ÉS CSOMAGOLÁSI SZABÁLYOK — PREPPER SHOP ENGINE / SITE-2]
+
+1. CONTENT LOCK (SZÖVEGEZÉSI TÁROK ZÁROLÁSA):
+   - A marketing és termékszövegek, fejlécek, gombfeliratok és leírások véglegesítve vannak a meglévő tartalomfájlokban (`src/data/content.ts` / JSON / konstansok).
+   - TILOS újraszövegezni, átfogalmazni vagy AI-generált marketing dumát írni az alkatrészekbe!
+   - A komponensek és oldalak KIZÁRÓLAG hivatkozhatnak a meglévő tartalomváltozókra vagy DTO mezőkre (pl. `{content.hero.headline}`).
+
+2. FÓKUSZ: UX, ELEMEK ÉS MODULÁRIS ARCHITEKTÚRA:
+   - Kizárólag a UI/UX elrendezésre, komponens-struktúrára, reszponzivitásra, állapotkezelésre (state management) és a teljesítményre fókuszálj!
+   - "A kevesebb több" elv: Letisztult, gyors, felesleges sallangoktól mentes, mobil-first elrendezést alakíts ki.
+
+3. MOTOR & TÍPUSBIZTONSÁG:
+   - Minden felületen tartsd be a szigorú típusbiztonságot (`typecheck`).
+   - A publikus oldalak kizárólag a szanált (1. fázisú) DTO-kat használhatják, szerveroldali adatszivárgás nélkül.
+   

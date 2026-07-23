@@ -28,6 +28,7 @@ export interface LoginFormProps {
 
 export function LoginForm({ onSuccess, className }: LoginFormProps) {
   const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -40,20 +41,27 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
       const response = await fetch(`${getAuthBaseUrl()}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: email.trim() }),
+        credentials: "include",
+        body: JSON.stringify({
+          email: email.trim(),
+          password,
+        }),
       });
 
       if (!response.ok) {
         setError(
           response.status === 401
-            ? "Felhasználó nem található."
-            : "Bejelentkezés sikertelen."
+            ? "Érvénytelen e-mail vagy jelszó."
+            : response.status === 429
+              ? "Túl sok próbálkozás. Próbáld később."
+              : "Bejelentkezés sikertelen."
         );
         return;
       }
 
       const session = (await response.json()) as Session;
       authProvider.setSession(session);
+      setPassword("");
       onSuccess?.();
     } catch {
       setError("Bejelentkezés sikertelen.");
@@ -91,6 +99,29 @@ export function LoginForm({ onSuccess, className }: LoginFormProps) {
                 "disabled:cursor-not-allowed disabled:opacity-50"
               )}
               placeholder="admin@example.com"
+            />
+          </div>
+
+          <div className="flex flex-col gap-1.5">
+            <label
+              htmlFor="password"
+              className="text-sm font-medium leading-none"
+            >
+              Jelszó
+            </label>
+            <input
+              id="password"
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className={cn(
+                "flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm shadow-sm",
+                "placeholder:text-muted-foreground",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+                "disabled:cursor-not-allowed disabled:opacity-50"
+              )}
             />
           </div>
 

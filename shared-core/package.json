@@ -20,7 +20,11 @@
     "./types": "./lib/types.ts",
     "./api-client": "./src/api-client.ts",
     "./auth/auth-provider": "./auth/auth-provider.ts",
+    "./auth/session-token": "./auth/session-token.ts",
+    "./auth/session-constants": "./auth/session-constants.ts",
+    "./auth/credentials": "./auth/credentials.ts",
     "./cart-store": "./lib/cart-store.ts",
+    "./contact-handler": "./src/contact-handler.ts",
     "./styles": "./src/styles/globals.css",
     "./lib/utils": "./src/lib/utils.ts"
   },
@@ -30,11 +34,14 @@
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
+    "bcryptjs": "^3.0.3",
     "better-sqlite3": "^11.10.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-rate-limit": "^8.6.0",
     "gray-matter": "^4.0.3",
     "lunr": "^2.3.9",
     "remark": "^15.0.1",
@@ -44,7 +51,9 @@
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/better-sqlite3": "^7.6.13",
+    "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/lunr": "^2.3.7",
