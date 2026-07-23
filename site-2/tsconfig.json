@@ -16,9 +16,10 @@
     "plugins": [{ "name": "next" }],
     "baseUrl": "..",
     "paths": {
+      "@/*": ["./site-2/src/*"],
       "@shared/components/*": ["./shared-core/src/components/*"],
       "@shared/lib/*": ["./shared-core/lib/*"],
-      "@shared/auth/*": ["./shared-core/auth/*"],
+  "@shared/auth/*": ["./shared-core/auth/*"],
       "@shared/templates/*": ["./shared-core/templates/*"],
       "@shared/config/*": ["./shared-core/src/config/*"],
       "@shared/data/*": ["./shared-core/data/*"],
@@ -27,5 +28,5 @@
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/routes_lovable"]
 }
