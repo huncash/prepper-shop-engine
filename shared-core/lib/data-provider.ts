@@ -1,6 +1,12 @@
 import "server-only";
 
-import { mkdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  readFileSync,
+  renameSync,
+  writeFileSync,
+} from "node:fs";
 import { dirname, resolve } from "node:path";
 
 import type { Product, User, UserRole } from "./types";
@@ -19,9 +25,16 @@ interface SourceData {
   products: RawProduct[];
 }
 
-const sourcePath = resolve(
-  process.env.PRODUCTS_DB_PATH ?? "/root/private_data/source_data.json"
-);
+function resolveSourcePath(): string {
+  if (process.env.PRODUCTS_DB_PATH) {
+    return resolve(process.env.PRODUCTS_DB_PATH);
+  }
+  const local = resolve(process.cwd(), "private_data", "source_data.json");
+  const dockerDefault = "/root/private_data/source_data.json";
+  if (existsSync(local)) return local;
+  if (existsSync(dockerDefault)) return dockerDefault;
+  return local;
+}
 
 const SENSITIVE_SPEC_KEY =
   /^(forrás|forras|beszerz|beszállít|beszallit|cost|purchase|wholesale|supplier|gyáriár|gyariar|nettobeszerz)/i;
@@ -39,8 +52,19 @@ const SENSITIVE_TOP_LEVEL = new Set([
 ]);
 
 function loadSource(): SourceData {
-  const raw = readFileSync(sourcePath, "utf-8");
-  return JSON.parse(raw) as SourceData;
+  try {
+    const raw = readFileSync(resolveSourcePath(), "utf-8");
+    const parsed = JSON.parse(raw) as SourceData;
+    return {
+      users: Array.isArray(parsed.users) ? parsed.users : [],
+      products: Array.isArray(parsed.products) ? parsed.products : [],
+    };
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") {
+      return { products: [], users: [] };
+    }
+    throw err;
+  }
 }
 
 /** Eltávolítja a beszállítói / beszerzési mezőket a publikus DTO-ból. */
@@ -100,6 +124,7 @@ export function getRawProductById(id: number): RawProduct | null {
 }
 
 function persistSource(data: SourceData): void {
+  const sourcePath = resolveSourcePath();
   mkdirSync(dirname(sourcePath), { recursive: true });
   const tmp = `${sourcePath}.${process.pid}.tmp`;
   writeFileSync(tmp, JSON.stringify(data, null, 2), "utf-8");

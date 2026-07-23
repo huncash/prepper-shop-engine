@@ -121,9 +121,6 @@ export default function ReferencesPage() {
                   src={section.imageSrc}
                   alt={section.imageAlt}
                   className="h-full w-full object-cover"
-                  onError={(e) => {
-                    (e.currentTarget as HTMLImageElement).style.display = "none";
-                  }}
                 />
               </div>
 
